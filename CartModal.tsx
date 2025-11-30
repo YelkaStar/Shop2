@@ -1,4 +1,4 @@
-import { useCart } from "../contexts/CartContext";
+import { useCart } from "./CartContext";
 import { useNavigate } from "react-router-dom";
 
 type Props = {

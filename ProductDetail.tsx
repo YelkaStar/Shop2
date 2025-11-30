@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useCart } from "../contexts/CartContext";
+import { useCart } from "./CartContext";
 import { catalogData } from "./Catalog";
 
 export default function ProductDetail() {

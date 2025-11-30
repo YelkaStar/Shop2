@@ -1,6 +1,6 @@
 import type { FC } from "react";
 import { useSearchParams } from "react-router-dom";
-import globe3 from "../assets/200x200.png";
+const globe3 = "https://via.placeholder.com/200";
 
 type Product = {
   id: number;

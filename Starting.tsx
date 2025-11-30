@@ -1,10 +1,11 @@
 import { useState } from "react";
-import LanguageMenu from "../Languagemenu/LanguageMenu";
-import type { Lang } from "../Languagemenu/Language/Boogers";
+import LanguageMenu from "./LanguageMenu";
+import type { Lang } from "./Boogers";
 import { Link, useNavigate } from "react-router-dom";
-import globe from "../assets/3211274.png";
-import globe2 from "../assets/KARTINTA.png";
-import CartWidget from "../components/CartWidget";
+import CartWidget from "./CartWidget";
+
+const globe = "https://via.placeholder.com/48";
+const globe2 = "https://via.placeholder.com/20";
 
 type Props = {
   t: (k: string) => string;
