@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Lang } from "./Language/Boogers"; // путь проверь
+import type { Lang } from "./Boogers"; // путь проверь
 
 type Props = {
   lang: Lang;                    // текущий язык

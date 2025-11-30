@@ -1,20 +1,20 @@
 import { useState } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
-import { tr, type Lang } from "./Language/Boogers";
-import { CartProvider } from "../contexts/CartContext";
+import { tr, type Lang } from "./Boogers";
+import { CartProvider } from "./CartContext";
 
-import Starting from "../pages/Starting";
-import AboutUs from "../pages/AboutUs";
-import DeliveryAndPayment from "../pages/DeliveryAndPayment";
-import ExchangeAndReturn from "../pages/ExchangeAndReturn";
-import Contacts from "../pages/Contacts";
-import PersonalAccount from "../pages/PersonalAccount";
-import Catalog from "../pages/Catalog";
-import ProductDetail from "../pages/ProductDetail";
-import LoginModal from "../components/LoginModal";
-import RegisterModal from "../components/RegisterModal";
-import CartModal from "../components/CartModal";
-import Checkout from "../pages/Checkout";
+import Starting from "./Starting";
+import AboutUs from "./AboutUs";
+import DeliveryAndPayment from "./DeliveryAndPayment";
+import ExchangeAndReturn from "./ExchangeAndReturn";
+import Contacts from "./Contacts";
+import PersonalAccount from "./PersonalAccount";
+import Catalog from "./Catalog";
+import ProductDetail from "./ProductDetail";
+import LoginModal from "./LoginModal";
+import RegisterModal from "./RegisterModal";
+import CartModal from "./CartModal";
+import Checkout from "./Checkout";
 export default function App() {
   const [lang, setLang] = useState<Lang>("ru");
   const t = (key: string) => tr[lang][key] || key;
