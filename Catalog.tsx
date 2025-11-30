@@ -1,6 +1,9 @@
 import type { FC } from "react";
-import { useSearchParams } from "react-router-dom";
-const globe3 = "https://via.placeholder.com/200";
+import { Link, useSearchParams } from "react-router-dom";
+import { useCart } from "./CartContext";
+
+const placeholderProductImage =
+  "https://via.placeholder.com/400x300?text=Product";
 
 type Product = {
   id: number;
@@ -17,14 +20,14 @@ type CategoryBlock = {
 };
 
 // Все новые разделы добавляй в КОНЕЦ массива catalogData
-const catalogData: CategoryBlock[] = [
+export const catalogData: CategoryBlock[] = [
   {
     name: "Roblox",
     products: [
       {
         id: 1,
         title: "800 Robux Roblox Gift Card",
-        image: "/images/robux-800.jpg",
+        image: placeholderProductImage,
         price: 499,
         oldPrice: 799,
         discount: 38,
@@ -32,7 +35,7 @@ const catalogData: CategoryBlock[] = [
       {
         id: 2,
         title: "1000 Robux Roblox Gift Card",
-        image: "/images/robux-1000.jpg",
+        image: placeholderProductImage,
         price: 549,
         oldPrice: 899,
         discount: 45,
@@ -40,7 +43,7 @@ const catalogData: CategoryBlock[] = [
       {
         id: 3,
         title: "1500 Robux Roblox Gift Card",
-        image: "/images/robux-1000.jpg",
+        image: placeholderProductImage,
         price: 549,
         oldPrice: 899,
         discount: 45,
@@ -48,7 +51,7 @@ const catalogData: CategoryBlock[] = [
       {
         id: 4,
         title: "2000 Robux Roblox Gift Card",
-        image: "/images/robux-1000.jpg",
+        image: placeholderProductImage,
         price: 549,
         oldPrice: 899,
         discount: 45,
@@ -56,7 +59,7 @@ const catalogData: CategoryBlock[] = [
       {
         id: 5,
         title: "5000 Robux Roblox Gift Card",
-        image: "/images/robux-1000.jpg",
+        image: placeholderProductImage,
         price: 549,
         oldPrice: 899,
         discount: 45,
@@ -69,7 +72,7 @@ const catalogData: CategoryBlock[] = [
       {
         id: 10,
         title: "Игра Project Zomboid (Steam ключ)",
-        image: "/images/zomboid.jpg",
+        image: placeholderProductImage,
         price: 299,
         oldPrice: 415,
         discount: 28,
@@ -77,7 +80,7 @@ const catalogData: CategoryBlock[] = [
       {
         id: 11,
         title: "Игра Rust (Steam ключ)",
-        image: "/images/squad.jpg",
+        image: placeholderProductImage,
         price: 499,
         oldPrice: 959,
         discount: 48,
@@ -85,7 +88,7 @@ const catalogData: CategoryBlock[] = [
       {
         id: 12,
         title: "Игра Squad (Steam ключ)",
-        image: "/images/squad.jpg",
+        image: placeholderProductImage,
         price: 499,
         oldPrice: 959,
         discount: 48,
@@ -93,7 +96,7 @@ const catalogData: CategoryBlock[] = [
       {
         id: 13,
         title: "Игра DayZ (Steam ключ)",
-        image: "/images/squad.jpg",
+        image: placeholderProductImage,
         price: 499,
         oldPrice: 959,
         discount: 48,
@@ -101,7 +104,7 @@ const catalogData: CategoryBlock[] = [
       {
         id: 14,
         title: "Игра Arma 3 (Steam ключ)",
-        image: "/images/squad.jpg",
+        image: placeholderProductImage,
         price: 499,
         oldPrice: 959,
         discount: 48,
@@ -114,7 +117,7 @@ const catalogData: CategoryBlock[] = [
       {
         id: 20,
         title: "PlayStation Store Card 20 USD",
-        image: globe3,
+        image: placeholderProductImage,
         price: 599,
         oldPrice: 799,
         discount: 25,
@@ -122,7 +125,7 @@ const catalogData: CategoryBlock[] = [
       {
         id: 21,
         title: "PlayStation Store Card 20 USD",
-        image: globe3,
+        image: placeholderProductImage,
         price: 599,
         oldPrice: 799,
         discount: 25,
@@ -130,7 +133,7 @@ const catalogData: CategoryBlock[] = [
       {
         id: 22,
         title: "PlayStation Store Card 20 USD",
-        image: globe3,
+        image: placeholderProductImage,
         price: 599,
         oldPrice: 799,
         discount: 25,
@@ -138,7 +141,7 @@ const catalogData: CategoryBlock[] = [
       {
         id: 23,
         title: "PlayStation Store Card 20 USD",
-        image: globe3,
+        image: placeholderProductImage,
         price: 599,
         oldPrice: 799,
         discount: 25,
@@ -146,7 +149,7 @@ const catalogData: CategoryBlock[] = [
       {
         id: 24,
         title: "PlayStation Store Card 20 USD",
-        image: globe3,
+        image: placeholderProductImage,
         price: 599,
         oldPrice: 799,
         discount: 25,
@@ -160,6 +163,7 @@ const Catalog: FC = () => {
   // читаем ?search= из URL
   const [searchParams] = useSearchParams();
   const searchQuery = (searchParams.get("search") || "").toLowerCase().trim();
+  const { addToCart } = useCart();
 
   return (
     <div className="bg-gray-100 min-h-screen py-10">
@@ -190,13 +194,13 @@ const Catalog: FC = () => {
                     className="bg-white rounded-2xl shadow-sm overflow-hidden flex flex-col"
                   >
                     {/* Картинка товара */}
-                    <div className="relative">
+                    <Link to={`/product/${p.id}`} className="relative block">
                       <img
                         src={p.image}
                         alt={p.title}
                         className="w-full h-52 object-cover"
                       />
-                    </div>
+                    </Link>
 
                     {/* Описание + цена */}
                     <div className="p-4 flex flex-col flex-1">
@@ -225,9 +229,7 @@ const Catalog: FC = () => {
 
                         <button
                           type="button"
-                          onClick={() =>
-                            console.log("Добавить в корзину", p.id)
-                          }
+                          onClick={() => addToCart(p)}
                           className="mt-3 w-full flex items-center justify-center gap-2 rounded-lg
                                    bg-blue-600 text-white text-sm font-medium py-2
                                    hover:bg-blue-700 active:translate-y-[1px]"
