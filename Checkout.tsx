@@ -2,7 +2,7 @@
 import type { FC, FormEvent } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useCart } from "../contexts/CartContext";
+import { useCart } from "./CartContext";
 
 const Checkout: FC = () => {
   const { items, getTotalPrice, clearCart } = useCart();
@@ -12,17 +12,37 @@ const Checkout: FC = () => {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [paymentMethod, setPaymentMethod] = useState<"card" | "cod">("card");
+  const [cardNumber, setCardNumber] = useState("");
+  const [cardExpiry, setCardExpiry] = useState("");
+  const [cardCvc, setCardCvc] = useState("");
+  const [cardHolder, setCardHolder] = useState("");
 
   const total = getTotalPrice();
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
+    const normalizedCardNumber = cardNumber.replace(/[^0-9]/g, "");
+    const normalizedExpiry = cardExpiry.replace(/[^0-9/]/g, "");
+    const normalizedCvc = cardCvc.replace(/[^0-9]/g, "");
+
+    const cardPayload =
+      paymentMethod === "card"
+        ? {
+            cardNumber: normalizedCardNumber,
+            cardExpiry: normalizedExpiry,
+            cardCvc: normalizedCvc,
+            cardHolder: cardHolder.trim(),
+            // token: "<insert provider token here>",
+          }
+        : undefined;
+
     console.log("Новый заказ:", {
       name,
       phone,
       email,
       paymentMethod,
+      cardPayload,
       items,
       total,
     });
@@ -132,6 +152,46 @@ const Checkout: FC = () => {
               <span>Оплата при получении (как заглушка)</span>
             </label>
           </div>
+
+          {paymentMethod === "card" && (
+            <div className="space-y-3 rounded-lg border p-4 bg-gray-50">
+              <h3 className="text-sm font-semibold">Данные карты</h3>
+              <input
+                className="w-full rounded-lg border px-3 py-2 text-sm"
+                placeholder="Номер карты"
+                value={cardNumber}
+                onChange={e => setCardNumber(e.target.value)}
+                required
+              />
+              <div className="grid grid-cols-2 gap-3">
+                <input
+                  className="w-full rounded-lg border px-3 py-2 text-sm"
+                  placeholder="MM/YY"
+                  value={cardExpiry}
+                  onChange={e => setCardExpiry(e.target.value)}
+                  required
+                />
+                <input
+                  className="w-full rounded-lg border px-3 py-2 text-sm"
+                  placeholder="CVC"
+                  value={cardCvc}
+                  onChange={e => setCardCvc(e.target.value)}
+                  required
+                />
+              </div>
+              <input
+                className="w-full rounded-lg border px-3 py-2 text-sm"
+                placeholder="Имя на карте"
+                value={cardHolder}
+                onChange={e => setCardHolder(e.target.value)}
+                required
+              />
+              <p className="text-xs text-gray-500">
+                Здесь можно подключить токенизацию/оплату от вашего провайдера, используя
+                cardPayload выше.
+              </p>
+            </div>
+          )}
 
           <button
             type="submit"
